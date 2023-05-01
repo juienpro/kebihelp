@@ -36,15 +36,19 @@ class Config():
         return {
             'Parameters': {
                 'cmd_focused_window': "xdotool getwindowfocus getwindowname",
-                "test": "toto"
-            },
-            'Templates': {
-                'default': {
+                "layout": {
                     'n_columns': 3,
                     'spacing': 3,
                     'background_color': '#282C34',
-                    'width': 1200,
-                    'height': 900,
+                    "opacity": 0.95,
+                    "tabs": {
+                        "background_color": "#30343D",
+                        "background_color_current": "#4F5564",
+                        "color": "#FFFFFF",
+                        "font": "Lato",
+                        "font_size": 8,
+                        "padding": 0
+                    },
                     'group_name': {
                         'background_color': '#FF0000',
                         'color': '#000000',
@@ -69,8 +73,11 @@ class Config():
                         },
                         "spacing": 5
                     },
-                    'include': 'All',
-                    'exclude': [],
+                }
+            },
+            'Tabs': {
+                'Default': {
+                    'include': []
                 }
             },
             'Rules': {
@@ -83,22 +90,27 @@ class Config():
         with open(config_file, 'w') as f:
             json.dump(self.config, f, indent=2)
 
-    def get_templates(self):
-        return self.config['Templates']
-    
-    def get_template(self, template_name):
-        if template_name in self.config['Templates']:
-            return self.config['Templates'][template_name]
+    def get_tabs(self):
+        return self.config['Tabs']
+
+    def is_tab_exists(self, name):
+        if name in self.config['Tabs']:
+            return True
+        return False
+
+    def get_tab(self, tab_name):
+        if tab_name in self.config['Tabs']:
+            return self.config['Tabs'][tab_name]
         else:
-            print("Error: cannot find the template {}".format(template_name))
+            print("Error: cannot find the Tab {}".format(tab_name))
             exit(1)
 
-    def get_current_template(self, template=None):
-        if template:
-            if template in self.config['Templates']:
-                return self.config['Templates'][template]
+    def get_current_tab(self, tab=None):
+        if tab:
+            if tab in self.config['Tabs']:
+                return self.config['Tabs'][tab]
             else:
-                print("Error: cannot find the template {}".format(template))
+                print("Error: cannot find the tab{}".format(tab))
                 exit(1)
         else:
             try:
@@ -107,14 +119,13 @@ class Config():
                 print("Command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
                 exit(1)
             ret = ret.decode('utf-8')
-            print(ret)
             for window_name in self.config['Rules']:
                 if ret in window_name:
-                    if self.config['Rules'][window_name] in self.config['Templates']:
-                        return self.config['Templates'][window_name]
+                    if self.config['Rules'][window_name] in self.config['Tabs']:
+                        return self.config['Tabs'][window_name]
                     else:
-                        print("The template {} cannot be found".format(window_name))
-            return self.config['Templates']["default"]
+                        print("The tab {} cannot be found".format(window_name))
+            return self.config['Tabs']["default"]
 
     # def get_window_layout(self):
     #     return self.config['Options']['window_layout']
@@ -124,7 +135,6 @@ class Config():
 
     def save_groups(self, groups):
         for group_name in groups.groups:
-            print(groups.groups[group_name].label)
             if not group_name in self.config['Shortcuts']:
                 self.config['Shortcuts'][group_name] = {
                     '_enabled': True
@@ -133,11 +143,18 @@ class Config():
                 self.config['Shortcuts'][group_name][shortcut.label] = [shortcut.value, shortcut.enabled, shortcut.source]
                 self.save()
 
-    def get_groups(self, template):
+    def associate_groups_to_tab(self, tab, groups):
+        include = self.config['Tabs'][tab]['include']
+        for group_name in groups.groups:
+            include.append(group_name)
+        self.config['Tabs'][tab]['include'] = include
+        self.save()
+
+    def get_groups(self, tab = None):
         groups = Groups.Groups()
         for group_name in self.config['Shortcuts']:
             group = Group.Group(group_name, self.config['Shortcuts'][group_name]['_enabled'])
-            if not group.is_in_template(template):
+            if tab and not group.is_in_tab(tab):
                 continue
             for shortcut_name in self.config['Shortcuts'][group_name]:
                 if shortcut_name != '_enabled':
@@ -150,3 +167,9 @@ class Config():
             groups.add_group(group)
         return groups
 
+    def get_all_groups(self):
+        tabs = self.get_tabs()
+        all_groups = {}
+        for t in tabs:
+            all_groups[t] = self.get_groups(t)
+        return all_groups

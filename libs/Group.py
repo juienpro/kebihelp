@@ -21,24 +21,11 @@ class Group():
             if s.label == shortcut.label:
                del self.shortcuts[i]
 
-    def is_in_template(self, template):
-        if template == None:
+    def is_in_tab(self, tab):
+        if tab == None:
             return True
         config = Config.Config()
-        template_config = config.get_template(template)
-        include = template_config['include']
-        exclude = template_config['exclude']
-
-        if isinstance(include, str):
-            if include == 'All':
-                if template in exclude:
-                    return False
-                return True
-            else:
-                print("Error: Invalid value for the include parameter in template {}".format(template))
-                exit(1)
-        else:
-            if template in include:
-                return True
-        return False
+        tab_config = config.get_tab(tab)
+        include = tab_config['include']
+        return self.label in include
 

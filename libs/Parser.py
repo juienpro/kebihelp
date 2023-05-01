@@ -17,9 +17,9 @@ class Parser():
         if not self.groups_supported and default_group == None:
             self.error = True
             self.error_reason = "Error: No default group specified"
-            return 
+            return
         filename = self.file
-        print(overriden_file)
+
         if filename == '' and not overriden_file:
             self.error = True
             self.error_reason = "No file specified. You probably need to export the shortcuts and use it as the input with the -f option"
@@ -35,7 +35,16 @@ class Parser():
 
     def filter(self, filter_group, filter_name, filter_value):
         self.groups.filter(filter_group, filter_name, filter_value)
+    
+    def set_prefix(self, prefix):
+        self.groups.set_prefix(prefix)
 
     def save(self):
         config = Config.Config()
         config.save_groups(self.groups)
+
+    def associate_to_tab(self, tab):
+        if tab:
+            config = Config.Config()
+            config.associate_groups_to_tab(tab, self.groups)
+

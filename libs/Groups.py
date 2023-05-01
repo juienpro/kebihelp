@@ -28,11 +28,18 @@ class Groups():
                 new_groups[group_name].add_shortcut(shortcut)
         self.groups = new_groups
 
-    def output_table(self, group = None, source = None, name=None, key=None, show_disabled=None, template=None):
+    def set_prefix(self, prefix):
+        new_groups = {}
+        for group_name in self.groups:
+            new_name = "{}-{}".format(prefix, group_name)
+            new_groups[new_name] = self.groups[group_name]
+        self.groups = new_groups
+
+    def output_table(self, group = None, source = None, name=None, key=None, show_disabled=None, tab=None):
         table = PrettyTable(["\033[33mID\033[0m", "\033[33mGroup\033[0m", "\033[33mLabel\033[0m", "\033[33mKey\033[0m", "\033[33mEnabled\033[0m", "\033[33mSource\033[0m"])
         index = 1
         for group_name in self.groups:
-            if not self.groups[group_name].is_in_template(template):
+            if not self.groups[group_name].is_in_tab(tab):
                 continue
             if group and (group not in group_name):
                 continue

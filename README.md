@@ -26,6 +26,22 @@ Then you have to launch `ukbhelp.py` with the relevant options. The tool has 5 m
 
 For each command, you can type `ukbhelp.py <command> -h` to get help.
 
+To achieve the configuration:
+```
+./kbhelp.py import -i 1 -p KDE
+./kbhelp.py import -i 2 -p Vivaldi
+./kbhelp.py import -i 4 -p Dolphin -g Dolphin -f ~/dolphin.shortcuts
+```
+
+
+
+```
+./kbhelp.py manage -a associate -g Dolphin -t Dolphin
+./kbhelp.py manage -a dissociate -g Dolphin -t Default
+./kbhelp.py manage -a associate -g Vivaldi -t Vivaldi
+./kbhelp.py manage -a dissociate -g Vivaldi -t Default
+```
+
 ## Feedbacks
 
 This tool is not perfect, but it may be useful to build your own "keybinding helper" if your Desktop Environment does not support this feature.
