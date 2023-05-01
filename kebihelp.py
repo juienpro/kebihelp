@@ -11,14 +11,8 @@ import libs.Gui as Gui
 VERSION="1.0"
 
 parsers = Parsers.Parsers()
-# config = Config.Config()
-# all_parsers = parser.parsers
 
-# parsers.output_table()
-# print(all_parsers)
-
-
-parser = argparse.ArgumentParser(description="KB Help")
+parser = argparse.ArgumentParser(description="Kebihelp - The universal keybinder helper")
 
 parser.add_argument("-v", "--version", dest="version", action="store_true", help="Show the current version")
 subparsers = parser.add_subparsers(dest="command", help="Main action to perform")
@@ -47,7 +41,7 @@ parser_keys.add_argument("-t", "--tab", dest="keys_tab", help="Select the tab")
 parser_tabs = subparsers.add_parser('tabs', help='List the tabs')
 
 parser_manage = subparsers.add_parser('manage', help='Manage keybindings')
-parser_manage.add_argument('-a', required=True, choices=['associate', 'dissociate'], dest="manage_action", help="Action to perform")
+parser_manage.add_argument('-a', required=True, choices=['associate', 'dissociate', 'hidetab', 'unhidetab', 'disablegroup', 'enablegroup'], dest="manage_action", help="Action to perform")
 parser_manage.add_argument('-g', dest="manage_groups", help="Input groups")
 parser_manage.add_argument('-t', dest="manage_tab", help="Target tab")
 
@@ -56,10 +50,9 @@ parser_show = subparsers.add_parser('show', help='Show the keybindings')
 parser_show.add_argument("-t", "--tab", dest="show_template", help="Show the keybindings only associated to this tab")
 
 args = parser.parse_args()
-print(args)
 
 if args.version:
-    print("KbHelp.py - v"+VERSION)
+    print("kebihelp.py - v"+VERSION)
     exit(0)
 
 if not args.command:
@@ -91,6 +84,14 @@ if args.command == 'manage':
         manage.associate_to_tab(args.manage_tab, args.manage_groups)
     if args.manage_action == 'dissociate':
         manage.dissociate_from_tab(args.manage_tab, args.manage_groups)
+    if args.manage_action == 'hidetab':
+        manage.hide_tab(args.manage_tab)
+    if args.manage_action == 'unhidetab':
+        manage.unhide_tab(args.manage_tab)
+    if args.manage_action == 'disablegroup':
+        manage.disable_group(args.manage_groups)
+    if args.manage_action == 'enablegroup':
+        manage.enable_group(args.manage_groups)
 
 if args.command == 'show':
     app = QApplication(sys.argv)

@@ -1,6 +1,6 @@
-# UKBHelp - The Universal Key Bindings Helper
+# Kebihelp - The Universal Linux Key Bindings Helper
 
-UKBHelp is an universal key-bindings helper for Linux, written in Python and heavily inspired by AwesomeWM and its "Mod4+s" feature.
+Kebihelp is an universal key-bindings helper for Linux, written in Python and initially inspired by AwesomeWM and its "Mod4+s" feature.
 
 The features are as follows:
 
@@ -16,7 +16,7 @@ The features are as follows:
 
 The code is a Python 3 script. You just need to clone this repository and run `pip3 install -r requirements.txt`.
 
-Then you have to launch `ukbhelp.py` with the relevant options. The tool has 5 main commands:
+Then you have to launch `kebihelp.py` with the relevant options. The tool has 5 main commands:
 
 - `parsers` to show the available shortcut parsers in the console
 - `templates` to show the available templates
@@ -24,24 +24,27 @@ Then you have to launch `ukbhelp.py` with the relevant options. The tool has 5 m
 - `keys` to show the keybindings configured
 - `show` to show the helper in itself
 
-For each command, you can type `ukbhelp.py <command> -h` to get help.
+For each command, you can type `kebihelp.py <command> -h` to get help.
 
 To achieve the configuration:
 ```
-./kbhelp.py import -i 1 -p KDE
-./kbhelp.py import -i 2 -p Vivaldi
-./kbhelp.py import -i 4 -p Dolphin -g Dolphin -f ~/dolphin.shortcuts
+./kebihelp.py import -i 1 -p KDE
+./kebihelp.py import -i 2 -p Vivaldi
+./kebihelp.py import -i 4 -p Dolphin -g Dolphin -f ~/dolphin.shortcuts
 ```
 
 
 
 ```
-./kbhelp.py manage -a associate -g Dolphin -t Dolphin
-./kbhelp.py manage -a dissociate -g Dolphin -t Default
-./kbhelp.py manage -a associate -g Vivaldi -t Vivaldi
-./kbhelp.py manage -a dissociate -g Vivaldi -t Default
+./kebihelp.py manage -a associate -g Dolphin -t Dolphin
+./kebihelp.py manage -a dissociate -g Dolphin -t Default
+./kebihelp.py manage -a associate -g Vivaldi -t Vivaldi
+./kebihelp.py manage -a dissociate -g Vivaldi -t Default
 ```
 
+```
+./kebihelp.py manage -a disablegroup -g 'Wacom Tablet'
+```
 ## Feedbacks
 
 This tool is not perfect, but it may be useful to build your own "keybinding helper" if your Desktop Environment does not support this feature.

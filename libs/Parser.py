@@ -35,7 +35,7 @@ class Parser():
 
     def filter(self, filter_group, filter_name, filter_value):
         self.groups.filter(filter_group, filter_name, filter_value)
-    
+
     def set_prefix(self, prefix):
         self.groups.set_prefix(prefix)
 

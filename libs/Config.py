@@ -77,6 +77,7 @@ class Config():
             },
             'Tabs': {
                 'Default': {
+                    'visible': True,
                     'include': []
                 }
             },
@@ -105,14 +106,13 @@ class Config():
             print("Error: cannot find the Tab {}".format(tab_name))
             exit(1)
 
-    def get_current_tab(self, tab=None):
-        if tab:
-            if tab in self.config['Tabs']:
-                return self.config['Tabs'][tab]
-            else:
-                print("Error: cannot find the tab{}".format(tab))
-                exit(1)
-        else:
+    def get_default_tab(self):
+        should_get_window_name = False
+        tab = "Default"
+        for window_name in self.config['Rules']:
+            if window_name != 'default':
+                should_get_window_name = True
+        if should_get_window_name:
             try:
                 ret = subprocess.check_output(self.config['Parameters']['cmd_focused_window'], shell=True, stderr=subprocess.STDOUT)
             except subprocess.CalledProcessError as e:
@@ -120,18 +120,12 @@ class Config():
                 exit(1)
             ret = ret.decode('utf-8')
             for window_name in self.config['Rules']:
-                if ret in window_name:
-                    if self.config['Rules'][window_name] in self.config['Tabs']:
-                        return self.config['Tabs'][window_name]
-                    else:
-                        print("The tab {} cannot be found".format(window_name))
-            return self.config['Tabs']["default"]
+                if window_name in ret:
+                    tab = self.config['Rules'][window_name]
 
-    # def get_window_layout(self):
-    #     return self.config['Options']['window_layout']
-
-    # def get_groups_layout(self):
-    #     return self.config['Options']['groups_layout']
+            if not self.is_tab_exists(tab):
+                print("Tab name {} specified in rule does not exist".format(tab))
+        return tab
 
     def save_groups(self, groups):
         for group_name in groups.groups:

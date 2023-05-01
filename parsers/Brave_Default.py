@@ -1,14 +1,14 @@
 import libs.QuickRefParser as Parser
 
-class Vivaldi_Default(Parser.Parser):
+class Brave_Default(Parser.Parser):
     def __init__(self):
         description = {
-            "name" : "Vivaldi Browser Default Shortcuts",
+            "name" : "Brave Browser Default Shortcuts",
             "category": "Browser",
             "desktop": "All",
-            "url": 'https://quickref.me/vivaldi',
+            "url": 'https://quickref.me/brave',
         }
-        super(Vivaldi_Default, self).__init__(description)
+        super(Brave_Default, self).__init__(description)
 
     def parse(self, default_group = None, overriden_file=None):
         super().parse(default_group)

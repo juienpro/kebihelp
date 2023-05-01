@@ -8,17 +8,16 @@ from functools import partial
 class MainWindow(QMainWindow):
     def __init__(self, tab_name):
         super().__init__()
-        if not tab_name:
-            tab_name = "Default"
 
         self.config = Config.Config()
-        self.tabs = self.config.config['Tabs'][tab_name]
+        self.current_tab_name = self.config.get_default_tab()
+        # self.tabs = self.config.config['Tabs'][tab_name]
         self.layout = self.config.config['Parameters']['layout']
         self.all_groups = self.config.get_all_groups()
         self.tab_buttons = []
         self.set_main_window()
         self.set_tabs()
-        self.change_tab(0)
+        self.change_tab_by_name(self.current_tab_name)
 
 
     def set_main_window(self):
@@ -35,6 +34,9 @@ class MainWindow(QMainWindow):
         self.tabs_layout = QHBoxLayout()
         self.stacked_widget = QStackedWidget()
         for tab in self.all_groups:
+            if self.config.config['Tabs'][tab]['visible'] == False:
+                if self.current_tab_name != tab:
+                    continue
             widget = self.get_tab_shortcuts(tab)
             self.stacked_widget.addWidget(widget)
 
@@ -46,6 +48,9 @@ class MainWindow(QMainWindow):
     def set_tabs(self):
         index = 0
         for tab in self.all_groups:
+            if self.config.config['Tabs'][tab]['visible'] == False:
+                if self.current_tab_name != tab:
+                    continue
             self.tab_button = QPushButton(tab)
             conf = self.layout['tabs']
             styles = {'normal': [], 'pressed':[]}
@@ -75,6 +80,13 @@ class MainWindow(QMainWindow):
 
     def change_tab(self, index):
         self.stacked_widget.setCurrentIndex(index)
+        self.tab_buttons[index].setChecked(True)
+
+    def change_tab_by_name(self, tab_name):
+        for index, tab in enumerate(self.all_groups):
+            if tab == tab_name:
+                self.change_tab(index)
+                break
 
     def get_tab_shortcuts(self, tab):
         widget = QWidget()
@@ -87,6 +99,8 @@ class MainWindow(QMainWindow):
 
         for group_name in self.all_groups[tab].groups:
             if len(self.all_groups[tab].groups[group_name].shortcuts) == 0:
+                continue
+            if self.all_groups[tab].groups[group_name].enabled == False:
                 continue
             lines.append(['layout', self.get_group_label(self.all_groups[tab].groups[group_name])])
             for shortcut in self.all_groups[tab].groups[group_name].shortcuts:
@@ -116,7 +130,12 @@ class MainWindow(QMainWindow):
 
     def get_group_label(self, group):
         hbox = QHBoxLayout()
-        label = QLabel(group.label)
+        group_name = group.label
+        if '-' in group_name:
+            sections = group_name.split('-')
+            group_name = sections[1]
+
+        label = QLabel(group_name)
         font = QFont(self.layout['group_name']['font'], self.layout['group_name']['font_size'])
         if self.layout['group_name']['bold']:
             font.setBold(True)

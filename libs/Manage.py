@@ -14,7 +14,7 @@ class Manage():
 
     def create_tab(self, tab_name):
         if tab_name not in self.config['Tabs']:
-            self.config['Tabs'][tab_name] = { "include": []}
+            self.config['Tabs'][tab_name] = { "visible": True, "include": []}
 
     def associate_to_tab(self, tab_name, group_mask):
         self.create_tab(tab_name)
@@ -35,4 +35,38 @@ class Manage():
         self.config['Tabs'][tab_name]['include'] = groups_to_add
         self.save()
 
+    def hide_tab(self, tab_name):
+        if tab_name not in self.config['Tabs']:
+            print("The tab {} does not exist".format(tab_name))
+            exit(1)
+        self.config['Tabs'][tab_name]['visible'] = False
+        self.save()
 
+    def unhide_tab(self, tab_name):
+        if tab_name not in self.config['Tabs']:
+            print("The tab {} does not exist".format(tab_name))
+            exit(1)
+        self.config['Tabs'][tab_name]['visible'] = True
+        self.save()
+
+    def disable_group(self, group_name):
+        for group in self.config['Shortcuts']:
+            name = group
+            if '-' in group:
+                sections = group.split('-')
+                name = sections[1]
+            if group_name == group or group_name == name:
+                self.config['Shortcuts'][group]['_enabled'] = False
+
+        self.save()
+
+    def enable_group(self, group_name):
+        for group in self.config['Shortcuts']:
+            name = group
+            if '-' in group:
+                sections = '-'.split(group)
+                name = sections[1]
+            if group_name == group or group_name == name:
+                self.config['Shortcuts'][group]['_enabled'] = True
+
+        self.save()
