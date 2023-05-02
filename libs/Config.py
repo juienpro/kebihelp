@@ -5,7 +5,7 @@ import libs.Groups as Groups
 import libs.Group as Group
 import libs.Shortcut as Shortcut
 
-CONFIG_FILE = "~/.config/keybindingshelper.ini"
+CONFIG_FILE = "~/.config/kebihelp.json"
 
 class Config():
     def __init__(self):

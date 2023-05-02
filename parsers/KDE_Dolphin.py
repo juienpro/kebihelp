@@ -9,7 +9,7 @@ import libs.Parser as Parser
 class KDE_Dolphin(Parser.Parser):
     def __init__(self):
         description = {
-            "name" : "KDE Dolphin shortcut",
+            "name" : "KDE Dolphin shortcuts",
             "category": "Desktop environment",
             "desktop": "KDE",
             "file": '',

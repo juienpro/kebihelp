@@ -11,6 +11,9 @@ class MainWindow(QMainWindow):
 
         self.config = Config.Config()
         self.current_tab_name = self.config.get_default_tab()
+        if tab_name:
+            self.current_tab_name = tab_name
+
         # self.tabs = self.config.config['Tabs'][tab_name]
         self.layout = self.config.config['Parameters']['layout']
         self.all_groups = self.config.get_all_groups()
@@ -83,10 +86,13 @@ class MainWindow(QMainWindow):
         self.tab_buttons[index].setChecked(True)
 
     def change_tab_by_name(self, tab_name):
-        for index, tab in enumerate(self.all_groups):
+        index = 0
+        for tab in self.all_groups:
             if tab == tab_name:
                 self.change_tab(index)
                 break
+            if self.config.config['Tabs'][tab]['visible'] == True:
+                index += 1
 
     def get_tab_shortcuts(self, tab):
         widget = QWidget()

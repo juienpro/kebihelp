@@ -8,7 +8,7 @@ import libs.Tabs as Tabs
 import libs.Manage as Manage
 import libs.Gui as Gui
 
-VERSION="1.0"
+VERSION="1.0.0"
 
 parsers = Parsers.Parsers()
 
@@ -47,7 +47,7 @@ parser_manage.add_argument('-t', dest="manage_tab", help="Target tab")
 
 
 parser_show = subparsers.add_parser('show', help='Show the keybindings')
-parser_show.add_argument("-t", "--tab", dest="show_template", help="Show the keybindings only associated to this tab")
+parser_show.add_argument("-t", "--tab", dest="show_tab", help="Show the keybindings only associated to this tab")
 
 args = parser.parse_args()
 
@@ -95,6 +95,6 @@ if args.command == 'manage':
 
 if args.command == 'show':
     app = QApplication(sys.argv)
-    window = Gui.MainWindow(args.show_template)
+    window = Gui.MainWindow(args.show_tab)
     window.show()
     app.exec()
