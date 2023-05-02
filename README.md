@@ -2,19 +2,26 @@
 
 Kebihelp is an universal key-bindings helper for Linux, written in Python and initially inspired by AwesomeWM and its "Mod4+s" feature.
 
-![](kebihelp.gif)
+![](docs/kebihelp.gif)
+
+Click on the picture to zoom.
+
+In this demo:
+- <Windows+s> displays the helper
+- <TAB> key is used to cycle through the tabs.
+- <ESC> is used to close it
 
 ## Features
 
 - Facilities to import shortcuts from existing files or websites
 - Organize shortcuts with Tabs and Groups
 - Customizable design (colors, opacity, fonts, etc.)
-- Window Rules supported, to show the shortcuts relevant to the current focused app
+- Window Rules supported, to show the shortcuts for the current focused app
 - CLI commands to manage the shortcuts
 
 ## Usage
 
-The code is a Python 3 script. You just need to clone this repository and run `pip3 install -r requirements.txt`.
+The code is a Python 3 script using PyQT5. You just need to clone this repository and run `pip3 install -r requirements.txt`.
 
 Then you have to launch `kebihelp.py` with the relevant options. The tool has 5 main commands:
 
@@ -38,9 +45,8 @@ To see the available importers, type `kebihelp.py import -l`
 
 Currently the supported importers are as follows, but it's not difficult to add additional ones (contact me if needed).
 
-+----+-----------------------------------+---------------------+---------+-------------------------------------------+---------------+
 | ID | Parser                            | Category            | Desktop | File                                      | Group support |
-+----+-----------------------------------+---------------------+---------+-------------------------------------------+---------------+
+|----|-----------------------------------|---------------------|---------|-------------------------------------------|---------------|
 | 1  | Kitty Default Shortcuts           | Terminal            | All     | https://sw.kovidgoyal.net/kitty/overview/ | True          |
 | 2  | Brave Browser Default Shortcuts   | Browser             | All     | https://quickref.me/brave                 | True          |
 | 3  | KDE Global Shortcuts              | Desktop environment | KDE     | ~/.config/kglobalshortcutsrc       | True          |
@@ -50,7 +56,6 @@ Currently the supported importers are as follows, but it's not difficult to add 
 | 7  | KDE Custom Shortcuts              | Desktop environment | KDE     | ~/.config/khotkeysrc               | False         |
 | 8  | KDE Dolphin shortcut              | Desktop environment | KDE     |                                           | False         |
 | 9  | Firefox Browser Default Shortcuts | Browser             | All     | https://quickref.me/firefox               | True          |
-+----+-----------------------------------+---------------------+---------+-------------------------------------------+---------------+
 
 All the shortcuts available on [QuickRef](https://quickref.me) can be added very easily. More info in the "Developing new importers" section.
 
@@ -86,7 +91,7 @@ All imported shortcuts are associated to one or more groups, and these groups ar
 You may want to filter the shortcuts to be imported. In this case, you can use one of the following option:
 
 ```
--fg <group name> will import only a particular group of the file/website
+-fg <group name> will import only a particular group from the file/website
 -fn <string> will import only shortcuts if the label/description contains <string>
 -fv <string> will import only shortucts if the shortcut itself contains <string>
 ```
@@ -288,7 +293,7 @@ Sometimes, you need to do everything by hand, therefore there is no inheritance.
 
 ### Adding support of a QuickRef cheatsheet
 
-This is the simpler. You just need to copy one of the existing QuickRef parsers to a new file, modify the names and description, and you are done. 
+This is the simplest option. You just need to copy one of the existing QuickRef parsers to a new file, modify the names and description, and you are done. 
 
 ```
 import libs.QuickRefParser as Parser
