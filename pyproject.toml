@@ -1,0 +1,36 @@
+[project]
+name = "kebihelp"
+version = "0.1.0"
+authors = [
+    { name="Julien Pro", email="contact@julienpro.com"}
+]
+description = "A Linux universal keybindings helper written in Python/QT5"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "prettytable>=3.10.0",
+    "PyQt5>=5.15.10",
+    "PyQt5_sip>=12.13.0"
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: System :: Operating System",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Desktop Environment"
+]
+
+[project.urls]
+Homepage = "https://github.com/juienpro/kebihelp"
+Issues = "https://github.com/juienpro/kebihelp/issues"
+
+[project.scripts]
+kebihelp = "kebihelp.main:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
