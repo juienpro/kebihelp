@@ -19,21 +19,33 @@ In this demo:
 - Configuration in a single JSON file
 - Window Rules supported, to show the shortcuts for the current focused app
 
+## Installation
+
+The package is published on PyPi. Installation with the virtual environment Venv:
+
+```
+mkdir ~/Tools/kebihelp && cd ~/Tools/kebihelp
+python3 -m venv venv
+source ./venv/bin/activate
+pip install kebihelp
+kebihelp show -a
+```
+
 ## Usage
 
 The code is a Python 3 script using PyQT5. You just need to clone this repository and run `pip3 install -r requirements.txt`.
 
-Then you have to launch `kebihelp.py` with the relevant options. The tool has 5 main commands:
+Then you have to launch `kebihelp` with the relevant options. The tool has 5 main commands:
 
 - `import` to import a file containing shortcuts
 - `list` to show the keybindings configured (console mode)
 - `show` to show the keybindings configured (GUI mode)
 
-For each command, you can type `kebihelp.py <command> -h` to get help.
+For each command, you can type `kebihelp <command> -h` to get help.
 
 The configuration file is stored in `~/.config/kebihelp.json`, which is a JSON file. You can add/modify your shortcuts there.
 
-When the helper is launched with the `./kebihelp.py show`, you can navigate through the tabs with the `<TAB>` key. The helper is closed with the `<ESC>` or `q` key.
+When the helper is launched with the `kebihelp show`, you can navigate through the tabs with the `<TAB>` key. The helper is closed with the `<ESC>` or `q` key.
 
 ### Importing keybindings
 
@@ -67,7 +79,7 @@ You can also create a text file anywhere with your keybindings. This is what I d
 
 ![](docs/yazi_example.png)
 
-Once imported, you can reorganize or modify the imported keybindings by editing the `$HOME/.config/kebihekp.json` file. 
+Once imported, you can reorganize or modify the imported keybindings by editing the `$HOME/.config/kebihelp.json` file. 
 
 #### Customizing the format of keybindings
 
@@ -132,6 +144,8 @@ Example:
 ```
 
 Here, the current focused window name is determined with `hyprctl` (Hyprland CLI tool), and then the class and title of the window will be shown.
+
+To launch Kebihelp with the automatic detection, add the `-a` or `--auto` option: `kebihelp show -a`
 
 ### Hiding tabs, groups or keybindings
 
