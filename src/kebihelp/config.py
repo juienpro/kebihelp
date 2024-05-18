@@ -27,6 +27,13 @@ class Config():
                       "position_keybinding": 2,
                       "position_label": 3
                 },
+                "keys": {
+                    "tab_previous": "Backtab", 
+                    "tab_next": "Tab",
+                    "scroll_down": "Down",
+                    "scroll_up": "Up",
+                    "quit": "Esc"
+                },
                 "layout": {
                     'n_columns': 3,
                     'spacing': 3,

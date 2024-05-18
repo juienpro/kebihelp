@@ -161,6 +161,45 @@ You can configure the visual aspect of the GUI helper:
 To do that, edit the `kebihelp.json` config file.
 
 
+### Size of the window
+
+The Window layout has a fixed size. You can change it in the config file:
+
+```
+"layout" {
+  "width": 900,
+  "height": 900
+}
+```
+
+These parameters are important: depending of the size of the Window and the number of keybindings, it will enable (or not) the scrollbars.
+
+### Remap default keys
+
+By default, the following keys are configured: 
+
+| Key | Function |
+|-----|----------|
+| Tab | Go to next tab |
+| Shift+Tab | Go to previous tab |
+| Down | Scroll down |
+| Up | Scroll up |
+| Esc | Quit |
+
+You can remap these keys in the config file.
+
+To set-up VIM style keybindings, configure the section `keys` in the `Parameters` of the `kebihelp.json` config file:
+
+```
+"keys": {
+  "tab_previous": "h", 
+  "tab_next": "l",
+  "scroll_down": "j",
+  "scroll_up": "k",
+  "quit": "q"
+}
+```
+
 ## Feedbacks
 
 This tool is not perfect, but it may be useful to build your own "keybinding helper" if your Desktop Environment does not support this feature.

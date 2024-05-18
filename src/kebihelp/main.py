@@ -6,7 +6,7 @@ from kebihelp.parsers import Parsers
 from kebihelp.config import Config
 from kebihelp.gui import MainWindow
 
-VERSION="0.1.1"
+VERSION="0.1.2"
 
 def main():
     parser = argparse.ArgumentParser(description="Kebihelp - The universal keybinder helper")

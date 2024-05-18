@@ -1,7 +1,7 @@
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QFrame, QLabel, QVBoxLayout, QHBoxLayout, QGridLayout, QScrollArea, QStyle, QLayout, QSizePolicy, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QFrame,  QLabel, QVBoxLayout, QHBoxLayout, QGridLayout, QScrollArea, QStyle, QLayout, QSizePolicy, QStackedWidget
 from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QKeySequence
 from kebihelp.config import Config
 import subprocess
 from functools import partial
@@ -14,7 +14,8 @@ class MainWindow(QMainWindow):
         self.autodetect = autodetect
         self.current_tab_name = None
         self.config = Config()
-
+        
+        self.keymap = self.load_keymap()
         self.keybindings = self.config.config['Keybindings']
         self.set_current_tab()
 
@@ -25,6 +26,19 @@ class MainWindow(QMainWindow):
         self.set_tabs()
         self.change_tab_by_name(self.current_tab_name)
     
+    def load_keymap(self):
+        default = {
+            'tab_previous': 'Backtab',
+            'tab_next': 'Tab',
+            'scroll_down': 'Down',
+            'scroll_up': 'Up',
+            'quit': 'Esc',
+        }
+        if 'keys' in self.config.config['Parameters']:
+            return self.config.config['Parameters']['keys']
+        else:
+            return default
+
     def set_current_tab(self):
         if self.selected_tab != None:
             if self.selected_tab not in self.keybindings:
@@ -61,11 +75,6 @@ class MainWindow(QMainWindow):
         self.setWindowOpacity(self.layout['opacity'])
 
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-        # print(self.layout['max_width'], self.layout['max_height'])
-        # self.setMaximumWidth(self.layout['max_width'])
-        # self.setMaximumHeight(self.layout['max_height'])
-        # self.setMaximumHeight(600)
-        # self.setGeometry(0, 0, 900, 400)
         self.main_widget = QWidget(self)
 
         self.window_layout = QVBoxLayout()
@@ -92,7 +101,14 @@ class MainWindow(QMainWindow):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setStyleSheet("QScrollBar {width:  0px;}")
         self.setCentralWidget(self.scroll_area)
-        self.setFixedSize(self.layout['width'], self.layout['height'])
+
+        width = 900
+        if 'width' in self.layout:
+            width = self.layout['width']
+        height = 900
+        if 'height' in self.layout:
+            height = self.layout['height']
+        self.setFixedSize(width, height)
 
     def set_tabs(self):
         index = 0
@@ -241,11 +257,14 @@ class MainWindow(QMainWindow):
         return hbox
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Escape:
+        # if event.key() == Qt.Key_Escape:
+        #     self.close()
+        # if event.key() == Qt.Key_Q:
+        #     self.close()
+        if event.key() == QKeySequence(self.keymap['quit']):
             self.close()
-        if event.key() == Qt.Key_Q:
-            self.close()
-        if event.key() == Qt.Key_Tab:
+
+        if event.key() == QKeySequence(self.keymap['tab_next']):
             current_index = self.stacked_widget.currentIndex()
             n_widgets = self.stacked_widget.count()
             if (current_index == n_widgets - 1):
@@ -254,5 +273,23 @@ class MainWindow(QMainWindow):
                 new_index = current_index + 1
             self.tab_buttons[new_index].setChecked(True)
             self.change_tab(new_index)
+
+        if event.key() == QKeySequence(self.keymap['tab_previous']):
+            current_index = self.stacked_widget.currentIndex()
+            n_widgets = self.stacked_widget.count()
+            if current_index == 0:
+                new_index = n_widgets - 1
+            else:
+                new_index = current_index - 1
+            self.tab_buttons[new_index].setChecked(True)
+            self.change_tab(new_index)
+
+        if event.key() == QKeySequence(self.keymap['scroll_down']):
+            if self.scroll_area.verticalScrollBar().value() < self.scroll_area.verticalScrollBar().maximum():
+                self.scroll_area.verticalScrollBar().setValue(self.scroll_area.verticalScrollBar().value() + self.scroll_area.verticalScrollBar().singleStep())
+
+        if event.key() == QKeySequence(self.keymap['scroll_up']):
+            if self.scroll_area.verticalScrollBar().value() > 0:
+                self.scroll_area.verticalScrollBar().setValue(self.scroll_area.verticalScrollBar().value() - self.scroll_area.verticalScrollBar().singleStep())
 
 
