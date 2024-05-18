@@ -61,8 +61,13 @@ class MainWindow(QMainWindow):
         self.setWindowOpacity(self.layout['opacity'])
 
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-
+        # print(self.layout['max_width'], self.layout['max_height'])
+        # self.setMaximumWidth(self.layout['max_width'])
+        # self.setMaximumHeight(self.layout['max_height'])
+        # self.setMaximumHeight(600)
+        # self.setGeometry(0, 0, 900, 400)
         self.main_widget = QWidget(self)
+
         self.window_layout = QVBoxLayout()
         self.tabs_layout = QHBoxLayout()
         self.stacked_widget = QStackedWidget()
@@ -75,18 +80,19 @@ class MainWindow(QMainWindow):
             widget = self.get_tab_shortcuts(tab_name)
             self.stacked_widget.addWidget(widget)
 
-        # for tab in self.all_groups:
-        #     if self.config.config['Tabs'][tab]['visible'] == False:
-        #         if self.current_tab_name != tab:
-        #             continue
-        #     widget = self.get_tab_shortcuts(tab)
-        #     self.stacked_widget.addWidget(widget)
-
         self.window_layout.addLayout(self.tabs_layout)
         self.window_layout.addWidget(self.stacked_widget)
+        # self.window_layout.setSizeConstraint(QVBoxLayout.SetMinimumSize)
         self.window_layout.addStretch()
         self.main_widget.setLayout(self.window_layout)
-        self.setCentralWidget(self.main_widget)
+        # self.setCentralWidget(self.main_widget)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidget(self.main_widget)
+        self.scroll_area.setFocusPolicy(Qt.NoFocus)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setStyleSheet("QScrollBar {width:  0px;}")
+        self.setCentralWidget(self.scroll_area)
+        self.setFixedSize(self.layout['width'], self.layout['height'])
 
     def set_tabs(self):
         index = 0
