@@ -24,7 +24,7 @@ In this demo:
 The package is published on PyPi. Installation with the virtual environment Venv:
 
 ```
-mkdir ~/Tools/kebihelp && cd ~/Tools/kebihelp
+mkdir -p ~/Tools/kebihelp && cd ~/Tools/kebihelp
 python3 -m venv venv
 source ./venv/bin/activate
 pip install kebihelp
