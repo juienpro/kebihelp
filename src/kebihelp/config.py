@@ -6,7 +6,7 @@ from prettytable import PrettyTable
 # import libs.Group as Group
 # import libs.Shortcut as Shortcut
 
-CONFIG_FILE = "~/.config/kebihelp.json"
+CONFIG_FILE = "~/.config/kebihelp/conf.json"
 
 class Config():
     def __init__(self):
