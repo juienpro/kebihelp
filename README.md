@@ -31,6 +31,35 @@ pip install kebihelp
 kebihelp show -a
 ```
 
+## Nix Flake
+
+This package is available as flake.
+
+Add the flake inputs to your `flake.nix`
+
+```nix
+# flake.nix
+inputs = {
+    kebihelp.url = "github:juienpro/kebihelp"
+};
+```
+
+For use with home-manager,
+
+```nix
+{ inputs, pkgs, ...}:
+
+home.package = [ inputs.kebihelp.packages.${pkgs.system}.default ]
+```
+
+For use with nixOS,
+
+```nix
+{ inputs, pkgs, ...}:
+
+environment.systemPackages = [ inputs.kebihelp.packages.${pkgs.system}.default ]
+```
+
 ## Usage
 
 The code is a Python 3 script using PyQT5. You just need to clone this repository and run `pip3 install -r requirements.txt`.
